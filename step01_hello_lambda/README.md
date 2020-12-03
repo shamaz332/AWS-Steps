@@ -40,7 +40,7 @@ curl https://xxxxxx.execute-api.us-east-2.amazonaws.com/prod/
 Now lets learn to run and test Lambdas locally
 
 Run lambda function locally
-
+https://docs.aws.amazon.com/cdk/latest/guide/sam.html
 Note: Note SAM should be installed and Docker running
 
 cdk synth --no-staging > template.yaml
