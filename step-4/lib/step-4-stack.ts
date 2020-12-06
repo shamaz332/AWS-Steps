@@ -36,5 +36,44 @@ export class Step4Stack extends cdk.Stack {
    new cdk.CfnOutput(this, "Stack Region", {
      value: this.region
    });
+
+//adding lambda
+
+const notesLambda  = new lambda.Function(this,"Noteshandler",{
+  runtime: lambda.Runtime.NODEJS_12_X,
+  handler: 'todo.handler',
+  code: lambda.Code.fromAsset('functions'),
+  memorySize: 1024
+})
+// Set the new Lambda function as a data source for the AppSync API
+const lambdaDs = api.addLambdaDataSource('lambdaDatasource', notesLambda);
+
+
+lambdaDs.createResolver({
+  typeName: "Query",
+  fieldName: "getNoteById"
+});
+
+lambdaDs.createResolver({
+  typeName: "Query",
+  fieldName: "listNotes"
+});
+
+lambdaDs.createResolver({
+  typeName: "Mutation",
+  fieldName: "createNote"
+});
+
+lambdaDs.createResolver({
+  typeName: "Mutation",
+  fieldName: "deleteNote"
+});
+
+lambdaDs.createResolver({
+  typeName: "Mutation",
+  fieldName: "updateNote"
+});
+
+
   }
 }
