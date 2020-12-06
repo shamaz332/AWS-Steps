@@ -74,6 +74,20 @@ lambdaDs.createResolver({
   fieldName: "updateNote"
 });
 
+//adding dynamodb]
+const notesTable = new ddb.Table(this, 'CDKNotesTable', {
+  billingMode: ddb.BillingMode.PAY_PER_REQUEST,
+  partitionKey: {
+    name: 'id',
+    type: ddb.AttributeType.STRING,
+  },
+});
+// enable the Lambda function to access the DynamoDB table (using IAM)
+notesTable.grantFullAccess(notesLambda)
+
+// Create an environment variable that we will use in the function code
+notesLambda.addEnvironment('NOTES_TABLE', notesTable.tableName);
+
 
   }
 }
