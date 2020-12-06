@@ -3,7 +3,7 @@ import * as appsync from '@aws-cdk/aws-appsync';
 import * as ddb from '@aws-cdk/aws-dynamodb';
 import * as lambda from '@aws-cdk/aws-lambda';
 
-export class AppsyncCdkAppStack extends cdk.Stack {
+export class Step4Stack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -35,8 +35,8 @@ export class AppsyncCdkAppStack extends cdk.Stack {
 
     const notesLambda = new lambda.Function(this, 'AppSyncNotesHandler', {
       runtime: lambda.Runtime.NODEJS_12_X,
-      handler: 'main.handler',
-      code: lambda.Code.fromAsset('lambda-fns'),
+      handler: 'todo.handler',
+      code: lambda.Code.fromAsset('functions'),
       memorySize: 1024
     });
     
