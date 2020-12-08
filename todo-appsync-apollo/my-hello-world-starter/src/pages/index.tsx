@@ -65,9 +65,9 @@ const GET_TODOS = gql`
 `
 
 const ADD_TODO = gql`
-mutation createNote($note:TodoInput!)
+mutation createNote($id:ID,$name:String,$completed:Boolean)
 {
-  createNote(note :$note)
+  createNote(id :$id,name:$name,completed:$completed)
 {
       id
       name
@@ -76,9 +76,11 @@ mutation createNote($note:TodoInput!)
 }
 `
 const DELETE_TASK = gql`
-mutation deleteTodo($noteId: ID!) {
-  deleteTodo(noteId: $noteId) {
+mutation deleteNote($noteId: String) {
+  deleteNote(noteId: $noteId) {
+    id
     name
+    completed
  
   }
 }
@@ -88,24 +90,26 @@ export default function Home() {
 
   const classes = useStyles();
 
-  const [todos, setTodos] = useState([{}])
-  let inputText;
+  const [name, setName] = useState("")
+  const [completed, setCompleted] = useState(false)
   const [createNote] = useMutation(ADD_TODO)
   const [deleteNote] = useMutation(DELETE_TASK)
   // const [updateTodo] = useMutation(UPDATE_TODO);
   const { loading, error, data } = useQuery(GET_TODOS);
 
-  const addTask = () => {
-    createNote({
+  const handleSubmit = async () => {
+    const todo = {
+      id: shortid.generate(),
+      name,
+      completed: false,
+    }
+    console.log("Creating Todo:", todo)
+    // setTitle("")
+    await createNote({
       variables: {
-        id: shortid.generate(),
-        name: inputText.value,
-        completed: false,
-
+        todo,
       },
-      refetchQueries: [{ query: GET_TODOS }]
     })
-    inputText.value = "";
   }
 
   const deleteTask = (e) => {
@@ -129,11 +133,17 @@ export default function Home() {
 
       <label>
         <h1> Add Task </h1>
-        <input type="text" ref={node => {
-          inputText = node;
-        }} required />
+
+        <input
+          value={name}
+          onChange={({ target }) => setName(target.value)}
+        />
+
       </label>
-      <Button variant="contained" color="primary" onClick={addTask}>Add Task</Button>
+
+
+
+      <Button variant="contained" color="primary" onClick={() => handleSubmit()}>Add Task</Button>
 
       <br /><br /><br />
       <TableContainer component={Paper}>

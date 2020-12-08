@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-async function deleteNote(noteId: string) {
+async function deleteNote(noteId: any) {
     const params = {
         TableName: process.env.NOTES_TABLE,
         Key: {
