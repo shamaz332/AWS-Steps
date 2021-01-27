@@ -55,8 +55,9 @@ export class DynamodbAsDataSourceStack extends cdk.Stack {
       typeName: "Query",
       fieldName: "notes",
       requestMappingTemplate: appsync.MappingTemplate.dynamoDbScanTable(), ///Mapping template to scan a DynamoDB table to fetch all entries.
-      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(), ////Mapping template for a single result item from DynamoDB.
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultList(), ////Mapping template for a single result item from DynamoDB.
     });
+  
 
     db_data_source.createResolver({
       typeName: "Mutation",

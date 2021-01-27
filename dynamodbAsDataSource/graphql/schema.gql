@@ -5,8 +5,6 @@ type Note {
 
 type Query {
     notes: [Note!]
-
-
 }
 
 type Mutation{
